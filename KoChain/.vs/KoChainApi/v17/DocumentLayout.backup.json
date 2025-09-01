@@ -7,10 +7,6 @@
       "RelativeMoniker": "D:0:0:{7F85CF6F-3195-4F1D-BCC5-EA6638BC0F3A}|KoChain.Infrastructure\\KoChain.Infrastructure.csproj|solutionrelative:kochain.infrastructure\\services\\rpcblockchainservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D54F3504-3654-427F-BAD8-42407F22EB9C}|KoChain\\KoChain.Api.csproj|c:\\users\\david ko\\source\\repos\\kochainapi\\kochain\\kochain\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{D54F3504-3654-427F-BAD8-42407F22EB9C}|KoChain\\KoChain.Api.csproj|solutionrelative:kochain\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7F85CF6F-3195-4F1D-BCC5-EA6638BC0F3A}|KoChain.Infrastructure\\KoChain.Infrastructure.csproj|c:\\users\\david ko\\source\\repos\\kochainapi\\kochain\\kochain.infrastructure\\configuration\\bitcoinrpcsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7F85CF6F-3195-4F1D-BCC5-EA6638BC0F3A}|KoChain.Infrastructure\\KoChain.Infrastructure.csproj|solutionrelative:kochain.infrastructure\\configuration\\bitcoinrpcsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -23,8 +19,8 @@
       "RelativeMoniker": "D:0:0:{E273D155-83DA-4029-A398-2A44B86B58E8}|KoChain.Core\\KoChain.Core.csproj|solutionrelative:kochain.core\\models\\bitcoin\\bitcoinaddressmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D54F3504-3654-427F-BAD8-42407F22EB9C}|KoChain\\KoChain.Api.csproj|c:\\users\\david ko\\source\\repos\\kochainapi\\kochain\\kochain\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D54F3504-3654-427F-BAD8-42407F22EB9C}|KoChain\\KoChain.Api.csproj|solutionrelative:kochain\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\David Ko\\source\\repos\\KoChainApi\\KoChain\\KoChain\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:KoChain\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,7 +34,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "IBlockchainService.cs",
               "DocumentMoniker": "C:\\Users\\David Ko\\source\\repos\\KoChainApi\\KoChain\\KoChain.Core\\Interfaces\\IBlockchainService.cs",
               "RelativeDocumentMoniker": "KoChain.Core\\Interfaces\\IBlockchainService.cs",
@@ -56,14 +52,14 @@
               "RelativeDocumentMoniker": "KoChain.Infrastructure\\Services\\RpcBlockchainService.cs",
               "ToolTip": "C:\\Users\\David Ko\\source\\repos\\KoChainApi\\KoChain\\KoChain.Infrastructure\\Services\\RpcBlockchainService.cs",
               "RelativeToolTip": "KoChain.Infrastructure\\Services\\RpcBlockchainService.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAgwCwAAABbAAAAAAAAAA==",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAgwDIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-31T07:11:52.659Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "BitcoinRpcSettings.cs",
               "DocumentMoniker": "C:\\Users\\David Ko\\source\\repos\\KoChainApi\\KoChain\\KoChain.Infrastructure\\Configuration\\BitcoinRpcSettings.cs",
               "RelativeDocumentMoniker": "KoChain.Infrastructure\\Configuration\\BitcoinRpcSettings.cs",
@@ -75,7 +71,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "BitcoinAddressModel.cs",
               "DocumentMoniker": "C:\\Users\\David Ko\\source\\repos\\KoChainApi\\KoChain\\KoChain.Core\\Models\\Bitcoin\\BitcoinAddressModel.cs",
               "RelativeDocumentMoniker": "KoChain.Core\\Models\\Bitcoin\\BitcoinAddressModel.cs",
@@ -87,7 +83,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\David Ko\\source\\repos\\KoChainApi\\KoChain\\KoChain\\Program.cs",
               "RelativeDocumentMoniker": "KoChain\\Program.cs",
@@ -96,25 +92,6 @@
               "ViewState": "AgIAAAMAAAAAAAAAAAAAABwAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-31T06:46:54.534Z"
-            }
-          ]
-        },
-        {
-          "DockedWidth": 444,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "appsettings.Development.json",
-              "DocumentMoniker": "C:\\Users\\David Ko\\source\\repos\\KoChainApi\\KoChain\\KoChain\\appsettings.Development.json",
-              "RelativeDocumentMoniker": "KoChain\\appsettings.Development.json",
-              "ToolTip": "C:\\Users\\David Ko\\source\\repos\\KoChainApi\\KoChain\\KoChain\\appsettings.Development.json",
-              "RelativeToolTip": "KoChain\\appsettings.Development.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-08-31T08:02:03.594Z",
-              "EditorCaption": ""
             }
           ]
         }
