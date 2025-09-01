@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KmCFeGq4dDY=",
+  "dgSpecHash": "MxtqAPF5R5Y=",
   "success": true,
-  "projectFilePath": "C:\\Users\\David Ko\\source\\repos\\KoChain\\KoChain.Core\\KoChain.Core.csproj",
+  "projectFilePath": "C:\\Users\\David Ko\\source\\repos\\KoChainApi\\KoChain\\KoChain.Core\\KoChain.Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\David Ko\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\1.0.0\\microsoft.extensions.logging.abstractions.1.0.0.nupkg.sha512",
     "C:\\Users\\David Ko\\.nuget\\packages\\microsoft.netcore.platforms\\1.0.1\\microsoft.netcore.platforms.1.0.1.nupkg.sha512",

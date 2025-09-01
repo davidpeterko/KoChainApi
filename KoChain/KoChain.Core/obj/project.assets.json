@@ -1625,11 +1625,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\David Ko\\source\\repos\\KoChain\\KoChain.Core\\KoChain.Core.csproj",
+      "projectUniqueName": "C:\\Users\\David Ko\\source\\repos\\KoChainApi\\KoChain\\KoChain.Core\\KoChain.Core.csproj",
       "projectName": "KoChain.Core",
-      "projectPath": "C:\\Users\\David Ko\\source\\repos\\KoChain\\KoChain.Core\\KoChain.Core.csproj",
+      "projectPath": "C:\\Users\\David Ko\\source\\repos\\KoChainApi\\KoChain\\KoChain.Core\\KoChain.Core.csproj",
       "packagesPath": "C:\\Users\\David Ko\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\David Ko\\source\\repos\\KoChain\\KoChain.Core\\obj\\",
+      "outputPath": "C:\\Users\\David Ko\\source\\repos\\KoChainApi\\KoChain\\KoChain.Core\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

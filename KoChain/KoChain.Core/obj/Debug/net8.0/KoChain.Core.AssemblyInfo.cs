@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KoChain.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b4eabac35e0edb1a0ef9bd37e9728e2b35acdb3d")]
 [assembly: System.Reflection.AssemblyProductAttribute("KoChain.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KoChain.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

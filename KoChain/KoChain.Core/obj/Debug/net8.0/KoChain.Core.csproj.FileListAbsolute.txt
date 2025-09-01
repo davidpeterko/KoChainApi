@@ -10,3 +10,16 @@ C:\Users\David Ko\source\repos\KoChain\KoChain.Core\obj\Debug\net8.0\KoChain.Cor
 C:\Users\David Ko\source\repos\KoChain\KoChain.Core\obj\Debug\net8.0\refint\KoChain.Core.dll
 C:\Users\David Ko\source\repos\KoChain\KoChain.Core\obj\Debug\net8.0\KoChain.Core.pdb
 C:\Users\David Ko\source\repos\KoChain\KoChain.Core\obj\Debug\net8.0\ref\KoChain.Core.dll
+C:\Users\David Ko\source\repos\KoChainApi\KoChain\KoChain.Core\bin\Debug\net8.0\KoChain.Core.deps.json
+C:\Users\David Ko\source\repos\KoChainApi\KoChain\KoChain.Core\bin\Debug\net8.0\KoChain.Core.dll
+C:\Users\David Ko\source\repos\KoChainApi\KoChain\KoChain.Core\bin\Debug\net8.0\KoChain.Core.pdb
+C:\Users\David Ko\source\repos\KoChainApi\KoChain\KoChain.Core\obj\Debug\net8.0\KoChain.Core.csproj.AssemblyReference.cache
+C:\Users\David Ko\source\repos\KoChainApi\KoChain\KoChain.Core\obj\Debug\net8.0\KoChain.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\David Ko\source\repos\KoChainApi\KoChain\KoChain.Core\obj\Debug\net8.0\KoChain.Core.AssemblyInfoInputs.cache
+C:\Users\David Ko\source\repos\KoChainApi\KoChain\KoChain.Core\obj\Debug\net8.0\KoChain.Core.AssemblyInfo.cs
+C:\Users\David Ko\source\repos\KoChainApi\KoChain\KoChain.Core\obj\Debug\net8.0\KoChain.Core.csproj.CoreCompileInputs.cache
+C:\Users\David Ko\source\repos\KoChainApi\KoChain\KoChain.Core\obj\Debug\net8.0\KoChain.Core.sourcelink.json
+C:\Users\David Ko\source\repos\KoChainApi\KoChain\KoChain.Core\obj\Debug\net8.0\KoChain.Core.dll
+C:\Users\David Ko\source\repos\KoChainApi\KoChain\KoChain.Core\obj\Debug\net8.0\refint\KoChain.Core.dll
+C:\Users\David Ko\source\repos\KoChainApi\KoChain\KoChain.Core\obj\Debug\net8.0\KoChain.Core.pdb
+C:\Users\David Ko\source\repos\KoChainApi\KoChain\KoChain.Core\obj\Debug\net8.0\ref\KoChain.Core.dll
