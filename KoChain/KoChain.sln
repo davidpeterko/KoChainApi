@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoChain.Api", "KoChain\KoChain.Api.csproj", "{D54F3504-3654-427F-BAD8-42407F22EB9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoChain.Core", "KoChain.Core\KoChain.Core.csproj", "{E273D155-83DA-4029-A398-2A44B86B58E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoChain.Infrastructure", "KoChain.Infrastructure\KoChain.Infrastructure.csproj", "{7F85CF6F-3195-4F1D-BCC5-EA6638BC0F3A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D54F3504-3654-427F-BAD8-42407F22EB9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D54F3504-3654-427F-BAD8-42407F22EB9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D54F3504-3654-427F-BAD8-42407F22EB9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D54F3504-3654-427F-BAD8-42407F22EB9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E273D155-83DA-4029-A398-2A44B86B58E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E273D155-83DA-4029-A398-2A44B86B58E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E273D155-83DA-4029-A398-2A44B86B58E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E273D155-83DA-4029-A398-2A44B86B58E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F85CF6F-3195-4F1D-BCC5-EA6638BC0F3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F85CF6F-3195-4F1D-BCC5-EA6638BC0F3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F85CF6F-3195-4F1D-BCC5-EA6638BC0F3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F85CF6F-3195-4F1D-BCC5-EA6638BC0F3A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9DFE8D5E-C13D-4F97-AEDA-7955E9F3693C}
+	EndGlobalSection
+EndGlobal

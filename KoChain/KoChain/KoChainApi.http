@@ -1,0 +1,6 @@
+@KoChain_HostAddress = http://localhost:5134
+
+GET {{KoChain_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
