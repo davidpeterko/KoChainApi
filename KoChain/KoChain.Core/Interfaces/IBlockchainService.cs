@@ -1,4 +1,5 @@
 ﻿using KoChain.Core.Models.Bitcoin;
+using KoChain.Core.Models.Bitcoin.Transaction;
 
 namespace KoChain.Core.Interfaces;
 

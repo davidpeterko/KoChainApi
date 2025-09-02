@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="NBitcoin" Version="9.0.0" />
+    <PackageReference Include="NBXplorer.Client" Version="5.0.5" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,8 +2,9 @@
 using NBitcoin.RPC;
 using KoChain.Core.Interfaces;
 using KoChain.Core.Models.Bitcoin;
+using KoChain.Core.Models.Bitcoin.Transaction;
 
-namespace KoChain.Infrastructure.Services;
+namespace KoChain.Infrastructure.Services.Rpc;
 
 public class RpcBlockchainService : IBlockchainService
 {

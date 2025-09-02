@@ -1,4 +1,4 @@
-﻿namespace KoChain.Core.Models.Bitcoin;
+﻿namespace KoChain.Core.Models.Bitcoin.Transaction;
 
 public class TransactionModel
 {

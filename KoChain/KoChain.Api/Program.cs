@@ -1,6 +1,6 @@
 using KoChain.Core.Interfaces;
 using KoChain.Infrastructure.Configuration;
-using KoChain.Infrastructure.Services;
+using KoChain.Infrastructure.Services.Rpc;
 using Microsoft.Extensions.Options;
 using NBitcoin;
 using NBitcoin.RPC;
@@ -8,11 +8,13 @@ using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 // NBitcoin RPC client configuration
 builder.Services.Configure<BitcoinRpcSettings>(
     builder.Configuration.GetSection("BitcoinRpcSettings"));
+
+// Blockstream API configuration
+builder.Services.Configure<BlockstreamSettings>(
+    builder.Configuration.GetSection("Blockstream"));
 
 // Register RPCClient as singleton
 builder.Services.AddSingleton<RPCClient>(sp =>
