@@ -13,22 +13,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<BitcoinRpcSettings>(builder.Configuration.GetSection("BitcoinRpcSettings"));
 builder.Services.Configure<BlockstreamSettings>(builder.Configuration.GetSection("Blockstream"));
 
-// Bitcoin RPC client (singleton — one connection to the node)
-builder.Services.AddSingleton<RPCClient>(sp =>
+// Network is registered separately so controllers can inject it for address validation
+// without taking a dependency on the full RPCClient.
+builder.Services.AddSingleton<Network>(sp =>
 {
     var options = sp.GetRequiredService<IOptions<BitcoinRpcSettings>>().Value;
-    var creds = new NetworkCredential(options.User, options.Password);
-    var uri = new Uri(options.Url);
-
-    Network network = options.Network.ToLower() switch
+    return options.Network.ToLower() switch
     {
         "main" => Network.Main,
         "testnet" => Network.TestNet,
         "regtest" => Network.RegTest,
         _ => Network.Main
     };
+});
 
-    return new RPCClient(creds, uri, network);
+// Bitcoin RPC client (singleton — one connection to the node)
+builder.Services.AddSingleton<RPCClient>(sp =>
+{
+    var options = sp.GetRequiredService<IOptions<BitcoinRpcSettings>>().Value;
+    var network = sp.GetRequiredService<Network>();
+    var creds = new NetworkCredential(options.User, options.Password);
+    return new RPCClient(creds, new Uri(options.Url), network);
 });
 
 // IBlockService  → RPC node (authoritative for block data, no address index needed)
