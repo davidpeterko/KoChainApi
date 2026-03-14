@@ -25,7 +25,7 @@ public class AddressController : ControllerBase
     }
 
     /// <summary>
-    /// Returns a full snapshot of a Bitcoin address: balance, UTXOs, and transaction history.
+    /// Returns a full snapshot of a Bitcoin address: balance, UTXOs, and transaction history.b
     /// </summary>
     /// <param name="address">
     /// A Bitcoin address in any standard format: legacy (1...), P2SH (3...), or bech32 (bc1...).

@@ -42,7 +42,9 @@ internal class TxStatus
 internal class Vin
 {
     public string txid { get; set; } = string.Empty;
-    public int vout { get; set; }
+    // uint32 in the Bitcoin protocol — coinbase inputs use 0xFFFFFFFF (4294967295) as a sentinel
+    // meaning "no previous output". This overflows int, so long is required.
+    public long vout { get; set; }
     public Prevout? prevout { get; set; }
 }
 

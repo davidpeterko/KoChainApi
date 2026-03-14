@@ -1,3 +1,4 @@
+using KoChain.Api.Middleware;
 using KoChain.Core.Interfaces;
 using KoChain.Infrastructure.Configuration;
 using KoChain.Infrastructure.Services.Blockstream;
@@ -45,11 +46,17 @@ builder.Services.AddHttpClient<ITransactionService, BlockstreamTransactionServic
 // IAddressService → Blockstream (bare RPC node has no address index)
 builder.Services.AddHttpClient<IAddressService, BlockstreamAddressService>();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Must be first in the pipeline so it catches exceptions from all subsequent middleware.
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
