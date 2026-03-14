@@ -1,10 +1,10 @@
-﻿using KoChain.Core.Models.Bitcoin;
+using KoChain.Core.Models.Bitcoin;
 
 namespace KoChain.Core.Interfaces;
 
-public interface IBlockchainService
+public interface IBlockService
 {
     Task<BlockModel> GetLatestBlockAsync(CancellationToken ct = default);
     Task<BlockModel> GetBlockByHeightAsync(int height, CancellationToken ct = default);
-    Task<TransactionModel> GetTransactionAsync(string txId, CancellationToken ct = default);
+    Task<BlockModel> GetBlockByHashAsync(string hash, CancellationToken ct = default);
 }
