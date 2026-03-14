@@ -32,7 +32,7 @@ public class BlockstreamAddressService : IAddressService
     }
 
     /// <summary>
-    /// Returns a complete snapshot of a Bitcoin address: balance, UTXO set, and transaction history.
+    /// Returns a complete snapshot of a Bitcoin address: balance, UTXO set, and first page of transactions.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -40,31 +40,19 @@ public class BlockstreamAddressService : IAddressService
     /// <list type="number">
     ///   <item><c>GET /address/:address</c> — summary stats (balance, tx count).</item>
     ///   <item><c>GET /address/:address/utxo</c> — all unspent outputs currently held by the address.</item>
-    ///   <item><c>GET /address/:address/txs</c> — transaction history (most recent 25 by default).</item>
+    ///   <item><c>GET /address/:address/txs</c> — most recent 25 transactions.</item>
     /// </list>
     /// </para>
     /// <para>
-    /// <b>Balance calculation:</b> The Blockstream API does not return a single balance field.
-    /// Balance is derived as <c>funded_txo_sum - spent_txo_sum</c> from the <c>chain_stats</c>
-    /// object, both values in satoshis.
+    /// <b>Balance calculation:</b> Balance is derived as <c>funded_txo_sum - spent_txo_sum</c>
+    /// from the <c>chain_stats</c> object, both values in satoshis.
     /// </para>
     /// <para>
-    /// <b>Confirmations:</b> Blockstream does not return an exact confirmation count per transaction.
-    /// <c>Confirmations</c> is set to 0 for unconfirmed and 1 for confirmed. To compute an exact
-    /// count, compare the transaction's <c>BlockHeight</c> against the current chain tip height.
-    /// </para>
-    /// <para>
-    /// <b>Pagination:</b> The <c>/txs</c> endpoint returns a maximum of 25 transactions per call.
-    /// Pagination support (via <c>/txs/chain/:last_seen_txid</c>) is not yet implemented.
+    /// For full paginated transaction history use <see cref="GetAddressTransactionsAsync"/>.
     /// </para>
     /// </remarks>
     /// <param name="address">The Bitcoin address (supports legacy, P2SH, and bech32 formats).</param>
     /// <param name="ct">Cancellation token.</param>
-    /// <returns>
-    /// An <see cref="AddressModel"/> with balance, UTXOs, and recent transaction history.
-    /// </returns>
-    /// <exception cref="InvalidOperationException">Thrown if the API returns no data for the given address.</exception>
-    /// <exception cref="HttpRequestException">Thrown if the Blockstream API is unreachable.</exception>
     public async Task<AddressModel> GetAddressDataAsync(string address, CancellationToken ct = default)
     {
         var addressData = await _httpClient.GetFromJsonAsync<BlockstreamAddressResponse>(
@@ -92,30 +80,38 @@ public class BlockstreamAddressService : IAddressService
                 ValueSatoshi = u.value,
                 ScriptPubKey = u.scriptpubkey
             }).ToList(),
-            Transactions = txs.Select(tx => new AddressTransaction
-            {
-                TxId = tx.txid,
-                FeeSatoshi = tx.fee,
-                Confirmations = tx.status.confirmed ? 1 : 0,
-                Timestamp = tx.status.block_time.HasValue
-                    ? DateTimeOffset.FromUnixTimeSeconds(tx.status.block_time.Value)
-                    : null,
-                Inputs = tx.vin.Select(i => new TransactionInput
-                {
-                    PrevTxId = i.txid,
-                    OutputIndex = i.vout,
-                    // prevout is null for coinbase transactions (block reward inputs).
-                    Address = i.prevout?.scriptpubkey_address ?? string.Empty,
-                    ValueSatoshi = i.prevout?.value ?? 0
-                }).ToList(),
-                Outputs = tx.vout.Select((o, index) => new TransactionOutput
-                {
-                    // scriptpubkey_address is null for unspendable outputs (e.g. OP_RETURN).
-                    Address = o.scriptpubkey_address ?? string.Empty,
-                    ValueSatoshi = o.value,
-                    Index = index
-                }).ToList()
-            }).ToList()
+            Transactions = txs.Select(BlockstreamMapper.ToAddressTransaction).ToList()
         };
+    }
+
+    /// <summary>
+    /// Returns a page of transactions for an address, supporting cursor-based pagination.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Blockstream uses cursor-based pagination rather than page numbers. Pass the txid of
+    /// the last transaction from the previous response as <paramref name="afterTxId"/> to
+    /// retrieve the next page. Omit it to get the most recent transactions.
+    /// </para>
+    /// <para>
+    /// Each page returns up to 25 transactions ordered from newest to oldest.
+    /// </para>
+    /// </remarks>
+    /// <param name="address">The Bitcoin address to query.</param>
+    /// <param name="afterTxId">
+    /// The txid of the last transaction from the previous page. Pass <c>null</c> for the first page.
+    /// </param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>Up to 25 transactions, ordered newest to oldest.</returns>
+    public async Task<List<AddressTransaction>> GetAddressTransactionsAsync(string address, string? afterTxId = null, CancellationToken ct = default)
+    {
+        // Without afterTxId: returns the most recent 25 transactions.
+        // With afterTxId: returns the next 25 transactions after that cursor.
+        var url = afterTxId is null
+            ? $"{_settings.BaseUrl}/address/{address}/txs"
+            : $"{_settings.BaseUrl}/address/{address}/txs/chain/{afterTxId}";
+
+        var txs = await _httpClient.GetFromJsonAsync<List<BlockstreamTxResponse>>(url, ct) ?? [];
+        return txs.Select(BlockstreamMapper.ToAddressTransaction).ToList();
     }
 }

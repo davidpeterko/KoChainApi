@@ -7,14 +7,12 @@ using System.Net.Http.Json;
 namespace KoChain.Infrastructure.Services.Blockstream;
 
 /// <summary>
-/// Retrieves full transaction details from the Blockstream Esplora API.
+/// Retrieves transaction data from the Blockstream Esplora API.
 /// <para>
-/// This is preferred over direct RPC for transaction lookups. A bare Bitcoin node requires
-/// N+1 RPC calls to resolve transaction inputs — one call to fetch the transaction itself,
-/// then one additional call per input to look up the previous output (in order to determine
-/// the sending address and amount). Blockstream's <c>GET /tx/:txid</c> endpoint returns
-/// all of this in a single HTTP response, including fully resolved <c>prevout</c> data
-/// on every input.
+/// Preferred over direct RPC for transaction lookups. A bare Bitcoin node requires N+1 RPC
+/// calls to resolve inputs — one call per input to look up the previous output for its address
+/// and amount. Blockstream's API returns fully resolved <c>prevout</c> data on every input
+/// in a single HTTP response.
 /// </para>
 /// </summary>
 public class BlockstreamTransactionService : ITransactionService
@@ -47,7 +45,7 @@ public class BlockstreamTransactionService : ITransactionService
     /// <b>Confirmations:</b> Blockstream does not return a confirmation count directly.
     /// <c>Confirmations</c> is set to 0 for unconfirmed transactions and 1 for confirmed ones.
     /// An exact count can be derived by comparing <c>BlockHeight</c> against the current
-    /// chain tip, which requires a separate call.
+    /// chain tip, which requires a separate call to <c>GET /api/blocks/tip</c>.
     /// </para>
     /// </remarks>
     /// <param name="txId">The transaction ID (txid) as a 64-character hex string.</param>
@@ -59,38 +57,34 @@ public class BlockstreamTransactionService : ITransactionService
     /// <exception cref="HttpRequestException">Thrown if the Blockstream API is unreachable.</exception>
     public async Task<TransactionModel> GetTransactionAsync(string txId, CancellationToken ct = default)
     {
-        var url = $"{_settings.BaseUrl}/tx/{txId}";
-        var tx = await _httpClient.GetFromJsonAsync<BlockstreamTxResponse>(url, ct);
+        var tx = await _httpClient.GetFromJsonAsync<BlockstreamTxResponse>(
+            $"{_settings.BaseUrl}/tx/{txId}", ct);
 
         if (tx == null)
             throw new InvalidOperationException($"No transaction found for txId {txId}");
 
-        return new TransactionModel
-        {
-            TxId = txId,
-            FeeSatoshi = tx.fee,
-            // Blockstream does not return a confirmation count — only a confirmed flag.
-            // 0 = unconfirmed (in mempool), 1 = confirmed in a block.
-            Confirmations = tx.status.confirmed ? 1 : 0,
-            BlockHeight = tx.status.block_height,
-            Timestamp = tx.status.block_time.HasValue
-                ? DateTimeOffset.FromUnixTimeSeconds(tx.status.block_time.Value)
-                : null,
-            Inputs = tx.vin.Select(i => new TransactionInput
-            {
-                PrevTxId = i.txid,
-                OutputIndex = i.vout,
-                // prevout is null for coinbase transactions (block reward), which have no previous output.
-                Address = i.prevout?.scriptpubkey_address ?? string.Empty,
-                ValueSatoshi = i.prevout?.value ?? 0
-            }).ToList(),
-            Outputs = tx.vout.Select((o, index) => new TransactionOutput
-            {
-                // scriptpubkey_address is null for unspendable outputs (e.g. OP_RETURN data outputs).
-                Address = o.scriptpubkey_address ?? string.Empty,
-                ValueSatoshi = o.value,
-                Index = index
-            }).ToList()
-        };
+        return BlockstreamMapper.ToTransactionModel(tx);
+    }
+
+    /// <summary>
+    /// Returns a page of transactions contained in the given block.
+    /// </summary>
+    /// <remarks>
+    /// Blockstream's <c>GET /block/:hash/txs/:start_index</c> endpoint returns up to 25
+    /// transactions per call. <paramref name="page"/> is converted to a start index
+    /// internally (<c>page * 25</c>), so page 0 = transactions 0–24, page 1 = 25–49, etc.
+    /// </remarks>
+    /// <param name="blockHash">The block hash as a 64-character hex string.</param>
+    /// <param name="page">Zero-based page number.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>Up to 25 transactions from the specified block page.</returns>
+    /// <exception cref="HttpRequestException">Thrown if the block hash is not found or the API is unreachable.</exception>
+    public async Task<List<TransactionModel>> GetBlockTransactionsAsync(string blockHash, int page = 0, CancellationToken ct = default)
+    {
+        var startIndex = page * 25;
+        var txs = await _httpClient.GetFromJsonAsync<List<BlockstreamTxResponse>>(
+            $"{_settings.BaseUrl}/block/{blockHash}/txs/{startIndex}", ct) ?? [];
+
+        return txs.Select(BlockstreamMapper.ToTransactionModel).ToList();
     }
 }

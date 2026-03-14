@@ -46,6 +46,9 @@ builder.Services.AddHttpClient<ITransactionService, BlockstreamTransactionServic
 // IAddressService → Blockstream (bare RPC node has no address index)
 builder.Services.AddHttpClient<IAddressService, BlockstreamAddressService>();
 
+// IMempoolService → Blockstream (real-time mempool stats and recent unconfirmed transactions)
+builder.Services.AddHttpClient<IMempoolService, BlockstreamMempoolService>();
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 

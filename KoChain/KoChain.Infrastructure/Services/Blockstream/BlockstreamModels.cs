@@ -59,3 +59,10 @@ internal class Vout
     public string? scriptpubkey_address { get; set; }
     public long value { get; set; }
 }
+
+internal class BlockstreamMempoolStats
+{
+    public int count { get; set; }
+    public long vsize { get; set; }
+    public long total_fee { get; set; }
+}

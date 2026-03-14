@@ -7,8 +7,8 @@ namespace KoChain.Api.Controllers;
 
 /// <summary>
 /// Endpoints for querying Bitcoin blocks.
-/// Block data is served from the local RPC node, which is authoritative
-/// for all block and chain state queries.
+/// Block metadata is served from the local RPC node.
+/// Block transaction lists are served from Blockstream, which returns enriched data.
 /// </summary>
 [ApiController]
 [Route("api/blocks")]
@@ -16,10 +16,27 @@ namespace KoChain.Api.Controllers;
 public class BlockController : ControllerBase
 {
     private readonly IBlockService _blockService;
+    private readonly ITransactionService _transactionService;
 
-    public BlockController(IBlockService blockService)
+    public BlockController(IBlockService blockService, ITransactionService transactionService)
     {
         _blockService = blockService;
+        _transactionService = transactionService;
+    }
+
+    /// <summary>
+    /// Returns the current chain tip height.
+    /// Cheaper than fetching the full latest block — useful for calculating confirmation counts.
+    /// </summary>
+    /// <response code="200">The current block height as an integer.</response>
+    /// <response code="500">The RPC node is unreachable or returned an error.</response>
+    [HttpGet("tip")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetChainTip(CancellationToken ct)
+    {
+        var height = await _blockService.GetChainTipHeightAsync(ct);
+        return Ok(new { height });
     }
 
     /// <summary>
@@ -42,7 +59,7 @@ public class BlockController : ControllerBase
     /// <param name="height">Zero-based block height. The genesis block is height 0.</param>
     /// <response code="200">The block at the specified height.</response>
     /// <response code="400">Height is negative.</response>
-    /// <response code="404">No block exists at the given height (height is beyond the chain tip).</response>
+    /// <response code="404">No block exists at the given height (beyond the chain tip).</response>
     /// <response code="500">The RPC node is unreachable or returned an error.</response>
     [HttpGet("height/{height:int}")]
     [ProducesResponseType(typeof(BlockModel), StatusCodes.Status200OK)]
@@ -76,7 +93,6 @@ public class BlockController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetBlockByHash(string hash, CancellationToken ct)
     {
-        // uint256.TryParse validates that the value is a properly formatted 256-bit hex hash.
         if (!uint256.TryParse(hash, out _))
             return Problem(
                 detail: $"'{hash}' is not a valid 256-bit block hash. Expected a 64-character hex string.",
@@ -85,5 +101,42 @@ public class BlockController : ControllerBase
 
         var block = await _blockService.GetBlockByHashAsync(hash, ct);
         return Ok(block);
+    }
+
+    /// <summary>
+    /// Returns a page of transactions from the given block.
+    /// </summary>
+    /// <param name="hash">The block hash as a 64-character hex string.</param>
+    /// <param name="page">Zero-based page number. Each page contains up to 25 transactions.</param>
+    /// <remarks>
+    /// Transactions are returned in the order they appear in the block.
+    /// To get all transactions in a large block, increment the page number until fewer
+    /// than 25 transactions are returned.
+    /// </remarks>
+    /// <response code="200">Up to 25 transactions from the specified page of the block.</response>
+    /// <response code="400">The hash is invalid or the page number is negative.</response>
+    /// <response code="404">No block with the given hash was found.</response>
+    /// <response code="500">The upstream API is unreachable or returned an error.</response>
+    [HttpGet("{hash}/transactions")]
+    [ProducesResponseType(typeof(List<TransactionModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetBlockTransactions(string hash, [FromQuery] int page = 0, CancellationToken ct = default)
+    {
+        if (!uint256.TryParse(hash, out _))
+            return Problem(
+                detail: $"'{hash}' is not a valid 256-bit block hash. Expected a 64-character hex string.",
+                statusCode: StatusCodes.Status400BadRequest,
+                title: "Invalid block hash.");
+
+        if (page < 0)
+            return Problem(
+                detail: "Page number must be a non-negative integer.",
+                statusCode: StatusCodes.Status400BadRequest,
+                title: "Invalid page number.");
+
+        var transactions = await _transactionService.GetBlockTransactionsAsync(hash, page, ct);
+        return Ok(transactions);
     }
 }
