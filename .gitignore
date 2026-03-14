@@ -1,37 +1,49 @@
-# Build results
+# ========================
+# Build output
+# ========================
 [Bb]in/
 [Oo]bj/
 [Ll]og/
-[Dd]ebug/
-[Rr]elease/
-x64/
-x86/
-[Aa][Rr][Mm]/
-[Aa][Rr][Mm]64/
+[Ll]ogs/
+publish/
+TestResults/
 
+# ========================
 # Visual Studio
+# ========================
+# Local VS state — editor layout, IntelliSense cache, Copilot indices, etc.
+# None of this is needed by other developers or CI.
 .vs/
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
 
-# Rider
+# ========================
+# JetBrains Rider
+# ========================
 .idea/
+*.DotSettings.user
 
+# ========================
 # NuGet
+# ========================
+# Restore output — packages are fetched at build time, not committed.
 *.nupkg
 *.snupkg
 packages/
 .nuget/
+# nuget.config
 
-# Others
-*.log
-*.cache
-*.config
-*.db
-*.bak
+# ========================
+# .NET secrets / environment
+# ========================
+# Never commit credentials or environment-specific secrets.
+secrets.json
 
+# ========================
 # OS-specific
+# ========================
 .DS_Store
 Thumbs.db
+desktop.ini
