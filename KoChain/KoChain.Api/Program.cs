@@ -1,5 +1,6 @@
 using KoChain.Core.Interfaces;
 using KoChain.Infrastructure.Configuration;
+using KoChain.Infrastructure.Services.Blockstream;
 using KoChain.Infrastructure.Services.Rpc;
 using Microsoft.Extensions.Options;
 using NBitcoin;
@@ -8,15 +9,11 @@ using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// NBitcoin RPC client configuration
-builder.Services.Configure<BitcoinRpcSettings>(
-    builder.Configuration.GetSection("BitcoinRpcSettings"));
+// Configuration
+builder.Services.Configure<BitcoinRpcSettings>(builder.Configuration.GetSection("BitcoinRpcSettings"));
+builder.Services.Configure<BlockstreamSettings>(builder.Configuration.GetSection("Blockstream"));
 
-// Blockstream API configuration
-builder.Services.Configure<BlockstreamSettings>(
-    builder.Configuration.GetSection("Blockstream"));
-
-// Register RPCClient as singleton
+// Bitcoin RPC client (singleton — one connection to the node)
 builder.Services.AddSingleton<RPCClient>(sp =>
 {
     var options = sp.GetRequiredService<IOptions<BitcoinRpcSettings>>().Value;
@@ -34,17 +31,21 @@ builder.Services.AddSingleton<RPCClient>(sp =>
     return new RPCClient(creds, uri, network);
 });
 
-// Register our service: interface -> concrete implementation
-builder.Services.AddScoped<IBlockchainService, RpcBlockchainService>();
+// IBlockService  → RPC node (authoritative for block data, no address index needed)
+builder.Services.AddScoped<IBlockService, RpcBlockService>();
+
+// ITransactionService → Blockstream (one HTTP call returns full input/output data)
+builder.Services.AddHttpClient<ITransactionService, BlockstreamTransactionService>();
+
+// IAddressService → Blockstream (bare RPC node has no address index)
+builder.Services.AddHttpClient<IAddressService, BlockstreamAddressService>();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -52,9 +53,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

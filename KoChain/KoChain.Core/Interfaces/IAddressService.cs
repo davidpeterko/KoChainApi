@@ -1,8 +1,8 @@
-﻿using KoChain.Core.Models.Bitcoin.Address;
+using KoChain.Core.Models.Bitcoin;
 
 namespace KoChain.Core.Interfaces;
 
 public interface IAddressService
 {
-    Task<AddressModel> GetAddressDataAsync(string address, CancellationToken cancellationToken = default);
+    Task<AddressModel> GetAddressDataAsync(string address, CancellationToken ct = default);
 }

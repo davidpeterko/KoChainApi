@@ -1,65 +1,56 @@
-﻿namespace KoChain.Core.Models.Bitcoin.Transaction;
+namespace KoChain.Core.Models.Bitcoin;
 
 public class TransactionModel
 {
-    /// <summary>
-    /// The transaction ID (hash) uniquely identifying this transaction.
-    /// </summary>
+    /// <summary>Transaction ID (hash).</summary>
     public string TxId { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Total value of all outputs in the transaction, in BTC.
-    /// </summary>
-    public decimal Amount { get; set; }
+    /// <summary>Transaction fee in satoshis.</summary>
+    public long FeeSatoshi { get; set; }
 
-    /// <summary>
-    /// List of inputs (UTXOs being spent)
-    /// </summary>
+    public decimal FeeBTC => FeeSatoshi / 100_000_000m;
+
+    /// <summary>Sum of all outputs in satoshis.</summary>
+    public long AmountSatoshi => Outputs.Sum(o => o.ValueSatoshi);
+
+    public decimal AmountBTC => AmountSatoshi / 100_000_000m;
+
+    /// <summary>Number of confirmations. 0 = unconfirmed.</summary>
+    public int Confirmations { get; set; }
+
+    /// <summary>Block height this transaction was included in, if confirmed.</summary>
+    public int? BlockHeight { get; set; }
+
+    /// <summary>Timestamp when the transaction was confirmed.</summary>
+    public DateTimeOffset? Timestamp { get; set; }
+
     public List<TransactionInput> Inputs { get; set; } = [];
-
-    /// <summary>
-    /// List of outputs (where BTC is sent)
-    /// </summary>
     public List<TransactionOutput> Outputs { get; set; } = [];
 }
 
 public class TransactionInput
 {
-    /// <summary>
-    /// Previous transaction hash (UTXO being spent)
-    /// </summary>
+    /// <summary>Hash of the previous transaction being spent.</summary>
     public string PrevTxId { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Output index in the previous transaction
-    /// </summary>
+    /// <summary>Output index in the previous transaction.</summary>
     public int OutputIndex { get; set; }
 
-    /// <summary>
-    /// Address providing the funds (derived from previous output)
-    /// </summary>
+    /// <summary>Address that owns this input (derived from the previous output).</summary>
     public string Address { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Value of this input in BTC (derived from previous output)
-    /// </summary>
-    public decimal Value { get; set; }
+    public long ValueSatoshi { get; set; }
+    public decimal ValueBTC => ValueSatoshi / 100_000_000m;
 }
 
 public class TransactionOutput
 {
-    /// <summary>
-    /// Address receiving funds
-    /// </summary>
+    /// <summary>Address receiving the funds.</summary>
     public string Address { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Value sent to this address in BTC
-    /// </summary>
-    public decimal Value { get; set; }
+    public long ValueSatoshi { get; set; }
+    public decimal ValueBTC => ValueSatoshi / 100_000_000m;
 
-    /// <summary>
-    /// Index of this output in the transaction
-    /// </summary>
+    /// <summary>Index of this output within the transaction.</summary>
     public int Index { get; set; }
 }
