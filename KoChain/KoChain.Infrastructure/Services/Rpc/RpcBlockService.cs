@@ -27,6 +27,16 @@ public class RpcBlockService : IBlockService
     }
 
     /// <summary>
+    /// Returns the current chain tip height as a plain integer.
+    /// Cheaper than <see cref="GetLatestBlockAsync"/> — only calls <c>getblockcount</c>,
+    /// with no follow-up block fetch. Useful for the UI to calculate confirmation counts.
+    /// </summary>
+    public async Task<int> GetChainTipHeightAsync(CancellationToken ct = default)
+    {
+        return await _rpcClient.GetBlockCountAsync(ct);
+    }
+
+    /// <summary>
     /// Returns the most recently mined block on the chain tip.
     /// </summary>
     /// <remarks>

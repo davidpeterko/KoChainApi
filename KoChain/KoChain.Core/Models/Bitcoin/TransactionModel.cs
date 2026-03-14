@@ -33,8 +33,12 @@ public class TransactionInput
     /// <summary>Hash of the previous transaction being spent.</summary>
     public string PrevTxId { get; set; } = string.Empty;
 
-    /// <summary>Output index in the previous transaction.</summary>
-    public int OutputIndex { get; set; }
+    /// <summary>
+    /// Output index in the previous transaction.
+    /// For coinbase inputs this will be 4294967295 (0xFFFFFFFF), the Bitcoin protocol
+    /// sentinel value indicating there is no previous output.
+    /// </summary>
+    public long OutputIndex { get; set; }
 
     /// <summary>Address that owns this input (derived from the previous output).</summary>
     public string Address { get; set; } = string.Empty;
